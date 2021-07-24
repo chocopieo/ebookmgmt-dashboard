@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class MyRentListViewHandler {
+public class DashboardViewHandler {
 
     @Autowired
-    private MyRentListRepository myRentListRepository;
+    private DashboardRepository dashboardRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
     public void whenRented_then_CREATE_1 (@Payload Rented rented) {
@@ -21,17 +21,17 @@ public class MyRentListViewHandler {
             if (!rented.validate()) return;
 
             // view 객체 생성
-            MyRentList myRentList = new MyRentList();
+            Dashboard dashboard = new Dashboard();
             // view 객체에 이벤트의 Value 를 set 함
-            myRentList.setId(rented.getId());
-            myRentList.setUserId(rented.getUserId());
-            myRentList.setBookId(rented.getBookId());
-            myRentList.setBookName(rented.getBookName());
-            myRentList.setRentalFee(rented.getRentalFee());
-            myRentList.setRentedDate(rented.getRentedDate());
-            myRentList.setStatus(rented.getStatus());
+            dashboard.setId(rented.getId());
+            dashboard.setUserId(rented.getUserId());
+            dashboard.setBookId(rented.getBookId());
+            dashboard.setBookName(rented.getBookName());
+            dashboard.setRentalFee(rented.getRentalFee());
+            dashboard.setRentedDate(rented.getRentedDate());
+            dashboard.setStatus(rented.getStatus());
             // view 레파지 토리에 save
-            myRentListRepository.save(myRentList);
+            dashboardRepository.save(dashboard);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -44,16 +44,16 @@ public class MyRentListViewHandler {
         try {
             if (!paid.validate()) return;
             // view 객체 조회
-            Optional<MyRentList> myRentListOptional = myRentListRepository.findById(paid.getRentId());
+            Optional<Dashboard> dashboardOptional = dashboardRepository.findById(paid.getRentId());
 
-            if( myRentListOptional.isPresent()) {
-                MyRentList myRentList = myRentListOptional.get();
+            if( dashboardOptional.isPresent()) {
+                Dashboard dashboard = dashboardOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                myRentList.setPaidDate(paid.getPaidDate());
-                myRentList.setStatus(paid.getStatus());
-                myRentList.setRentalFee(paid.getRentalFee());
+                dashboard.setPaidDate(paid.getPaidDate());
+                dashboard.setStatus(paid.getStatus());
+                dashboard.setRentalFee(paid.getRentalFee());
                 // view 레파지 토리에 save
-                myRentListRepository.save(myRentList);
+                dashboardRepository.save(dashboard);
             }
 
         }catch (Exception e){
@@ -65,15 +65,16 @@ public class MyRentListViewHandler {
         try {
             if (!approved.validate()) return;
             // view 객체 조회
-            Optional<MyRentList> myRentListOptional = myRentListRepository.findById(approved.getRentId());
+            Optional<Dashboard> dashboardOptional = dashboardRepository.findById(approved.getRentId());
 
-            if( myRentListOptional.isPresent()) {
-                MyRentList myRentList = myRentListOptional.get();
+            if( dashboardOptional.isPresent()) {
+                Dashboard dashboard = dashboardOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                myRentList.setApprovedDate(approved.getApprovedDate());
-                myRentList.setStatus(approved.getStatus());
+                dashboard.setApprovedDate(approved.getApprovedDate());
+                dashboard.setRentedDate(approved.getApprovedDate());
+                dashboard.setStatus(approved.getStatus());
                 // view 레파지 토리에 save
-                myRentListRepository.save(myRentList);
+                dashboardRepository.save(dashboard);
             }
 
         }catch (Exception e){
@@ -85,15 +86,15 @@ public class MyRentListViewHandler {
         try {
             if (!returned.validate()) return;
             // view 객체 조회
-            Optional<MyRentList> myRentListOptional = myRentListRepository.findById(returned.getId());
+            Optional<Dashboard> dashboardOptional = dashboardRepository.findById(returned.getId());
 
-            if( myRentListOptional.isPresent()) {
-                MyRentList myRentList = myRentListOptional.get();
+            if( dashboardOptional.isPresent()) {
+                Dashboard dashboard = dashboardOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                myRentList.setReturnedDate(returned.getReturnedDate());
-                myRentList.setStatus(returned.getStatus());
+                dashboard.setReturnedDate(returned.getReturnedDate());
+                dashboard.setStatus(returned.getStatus());
                 // view 레파지 토리에 save
-                myRentListRepository.save(myRentList);
+                dashboardRepository.save(dashboard);
             }
 
 
@@ -106,15 +107,15 @@ public class MyRentListViewHandler {
         try {
             if (!canceled.validate()) return;
             // view 객체 조회
-            Optional<MyRentList> myRentListOptional = myRentListRepository.findById(canceled.getId());
+            Optional<Dashboard> dashboardOptional = dashboardRepository.findById(canceled.getId());
 
-            if( myRentListOptional.isPresent()) {
-                MyRentList myRentList = myRentListOptional.get();
+            if( dashboardOptional.isPresent()) {
+                Dashboard dashboard = dashboardOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                myRentList.setStatus(canceled.getStatus());
-                myRentList.setCanceledDate(canceled.getCanceledDate());
+                dashboard.setStatus(canceled.getStatus());
+                dashboard.setCanceledDate(canceled.getCanceledDate());
                 // view 레파지 토리에 save
-                myRentListRepository.save(myRentList);
+                dashboardRepository.save(dashboard);
             }
 
         }catch (Exception e){

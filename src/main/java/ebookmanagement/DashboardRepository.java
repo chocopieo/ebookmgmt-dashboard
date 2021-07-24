@@ -5,7 +5,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MyRentListRepository extends CrudRepository<MyRentList, Long> {
+public interface DashboardRepository extends CrudRepository<Dashboard, Long> {
 
 
 }
